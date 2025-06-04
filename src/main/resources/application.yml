@@ -1,11 +1,11 @@
 spring:
   application:
-    name: parking manager
+    name: parkingmanager
   datasource:
     url: jdbc:postgresql://localhost:5432/parkingmanager
     username: docker
     password: docker
-    driver-class-name: org.postgresql.driver
+    driver-class-name: org.postgresql.Driver
   jpa:
     show-sql: true
     hibernate:

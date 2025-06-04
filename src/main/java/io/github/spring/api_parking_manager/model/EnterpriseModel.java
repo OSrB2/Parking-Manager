@@ -12,6 +12,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.FetchType;
@@ -26,7 +27,6 @@ import lombok.Data;
 @Table(name = "tb_enterprise")
 @Data
 @EntityListeners(AuditingEntityListener.class)
-
 public class EnterpriseModel {
 
   @Id
@@ -41,7 +41,7 @@ public class EnterpriseModel {
   @CNPJ
   private String cnpj;
   
-  @Column(name = "address", nullable = false)
+  @Embedded
   private AddressModel address;
 
   @Column(name = "motorcyle_spaces", nullable = false)

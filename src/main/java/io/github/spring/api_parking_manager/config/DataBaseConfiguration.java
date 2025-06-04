@@ -15,9 +15,9 @@ public class DataBaseConfiguration {
   String url;
   @Value("${spring.datasource.username}")
   String username;
-  @Value("{spring.datasource.password}")
+  @Value("${spring.datasource.password}")
   String password;
-  @Value("{spring.datasource.driver-class-name}")
+  @Value("${spring.datasource.driver-class-name}")
   String driver;
 
   @Bean
