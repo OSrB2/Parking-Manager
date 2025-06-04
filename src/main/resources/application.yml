@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: parking manager
+  datasource:
+    url: jdbc:postgresql://localhost:5432/parkingmanager
+    username: docker
+    password: docker
+    driver-class-name: org.postgresql.driver
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  flyway:
+    enabled: true
+    locations: filesystem:db/migration
+    baseline-on-migrate: true
+  logging:
+    level:
+      org:
+        springframework:
+          autoconfigure: warn
