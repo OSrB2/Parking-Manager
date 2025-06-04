@@ -10,9 +10,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Data;
 
@@ -22,11 +19,6 @@ import lombok.Data;
 @EntityListeners(AuditingEntityListener.class)
 
 public class AddressModel {
-
-  @Id
-  @Column(name = "id")
-  @GeneratedValue(strategy = GenerationType.UUID)
-  private UUID id;
 
   @Column(name = "street_address", nullable = false)
   private String streetAddress;
