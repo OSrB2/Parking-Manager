@@ -2,8 +2,10 @@ package io.github.spring.api_parking_manager.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import lombok.Data;
 
 @Embeddable
+@Data
 public class AddressModel {
 
   @Column(name = "street_address", nullable = false)

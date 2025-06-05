@@ -21,6 +21,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.Valid;
 import lombok.Data;
 
 @Entity
@@ -37,11 +38,12 @@ public class EnterpriseModel {
   @Column(name = "name", nullable = false)
   private String name;
 
-  @Column(name = "cnpj", nullable = false)
-  @CNPJ
+  @Column(name = "cnpj", nullable = false, unique = true)
+  @CNPJ()
   private String cnpj;
   
   @Embedded
+  @Valid
   private AddressModel address;
 
   @Column(name = "motorcyle_spaces", nullable = false)
