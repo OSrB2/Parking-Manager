@@ -16,6 +16,8 @@ import jakarta.persistence.EntityListeners;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -29,6 +31,7 @@ public class VehicleModel {
 
   @Id
   @Column(name = "id", nullable = false)
+  @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;
   
   @Column(name = "brand", nullable = false)  
