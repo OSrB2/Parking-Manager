@@ -24,7 +24,7 @@ import jakarta.persistence.Table;
 import lombok.Data;
 
 @Entity
-@Table(name = "tb_vechicle")
+@Table(name = "tb_vehicle")
 @Data
 @EntityListeners(AuditingEntityListener.class)
 public class VehicleModel {
