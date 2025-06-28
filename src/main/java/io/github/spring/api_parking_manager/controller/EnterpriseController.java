@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.github.spring.api_parking_manager.model.EnterpriseModel;
+import io.github.spring.api_parking_manager.model.dtos.EnterpriseResponseDTO;
 import io.github.spring.api_parking_manager.service.EnterpriseService;
 import lombok.RequiredArgsConstructor;
 
@@ -32,7 +33,7 @@ public class EnterpriseController {
   }
 
   @GetMapping
-  public ResponseEntity<List<EnterpriseModel>> listAll() {
+  public ResponseEntity<List<EnterpriseResponseDTO>> listAll() {
     return ResponseEntity.ok(enterpriseService.listAllEnterprises());
   }
 

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.github.spring.api_parking_manager.model.VehicleModel;
+import io.github.spring.api_parking_manager.model.dtos.VehicleResponseDTO;
 import io.github.spring.api_parking_manager.service.VehicleService;
 import lombok.RequiredArgsConstructor;
 
@@ -32,7 +33,7 @@ public class VehicleController {
   }
 
   @GetMapping
-  public ResponseEntity<List<VehicleModel>> listAll() {
+  public ResponseEntity<List<VehicleResponseDTO>> listAll() {
     return ResponseEntity.ok(vehicleService.listAllVehicles());
   }
 
