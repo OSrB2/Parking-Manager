@@ -1,11 +1,15 @@
 package io.github.spring.api_parking_manager.controller;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,5 +34,15 @@ public class MovementsController {
   @GetMapping
   public ResponseEntity<List<MovementsModel>> list() {
     return ResponseEntity.ok(movementsService.listAllMovements());
+  }
+
+  @GetMapping("/{id}")
+  public ResponseEntity<Optional<MovementsModel>> findById(@PathVariable UUID id) {
+    return ResponseEntity.ok(movementsService.findMovementById(id));
+  }
+
+  @PutMapping("/{id}")
+  public ResponseEntity<MovementsModel> existRegister(@PathVariable UUID id) {
+    return ResponseEntity.ok(movementsService.registerExit(id));
   }
 }

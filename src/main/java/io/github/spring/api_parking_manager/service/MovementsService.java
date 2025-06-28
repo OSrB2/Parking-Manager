@@ -2,6 +2,7 @@ package io.github.spring.api_parking_manager.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
@@ -66,5 +67,30 @@ public class MovementsService {
 
   public List<MovementsModel> listAllMovements() {
     return movementsRepository.findAll();
+  }
+
+  public Optional<MovementsModel> findMovementById(UUID id) {
+    return movementsRepository.findById(id);
+  }
+
+  public MovementsModel registerExit(UUID id) {
+    MovementsModel movement = movementsRepository.findById(id)
+      .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Movement not found!"));
+
+    switch (movement.getType()) {
+      case CAR:
+        movement.getEnterprise().setCarSpaces(movement.getEnterprise().getCarSpaces() + 1);
+        break;
+      case MOTORCYCLE:
+        movement.getEnterprise().setMotorcycleSpaces(movement.getEnterprise().getMotorcycleSpaces() + 1);
+        break;
+      default:
+        break;
+    }
+
+    movement.setStatus(Status.FINISHED);
+    movement.setDepartureTime(LocalDateTime.now());
+    
+    return movementsRepository.save(movement);
   }
 }
