@@ -1,5 +1,6 @@
 package io.github.spring.api_parking_manager.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -11,6 +12,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import io.github.spring.api_parking_manager.model.AddressModel;
 import io.github.spring.api_parking_manager.model.EnterpriseModel;
+import io.github.spring.api_parking_manager.model.dtos.EnterpriseResponseDTO;
+import io.github.spring.api_parking_manager.model.mappers.EnterpriseMapper;
 import io.github.spring.api_parking_manager.repository.EnterpriseRepository;
 import lombok.RequiredArgsConstructor;
 
@@ -19,13 +22,20 @@ import lombok.RequiredArgsConstructor;
 public class EnterpriseService {
   
   private final EnterpriseRepository enterpriseRepository;
+  private final EnterpriseMapper enterpriseMapper;
 
   public EnterpriseModel register(EnterpriseModel enterprise) {
     return enterpriseRepository.save(enterprise);
   }
 
-  public List<EnterpriseModel> listAllEnterprises() {
-    return enterpriseRepository.findAll();
+  public List<EnterpriseResponseDTO> listAllEnterprises() {
+    List<EnterpriseModel> enterprises = enterpriseRepository.findAll();
+    List<EnterpriseResponseDTO> enterpriseDTOs = new ArrayList<>();
+
+    for (EnterpriseModel enterprise : enterprises) {
+      enterpriseDTOs.add(enterpriseMapper.toResponseDTO(enterprise));
+    }
+    return enterpriseDTOs;
   }
 
   public Optional<EnterpriseModel> findEntenpriseById(UUID id) {

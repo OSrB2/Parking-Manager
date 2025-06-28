@@ -1,5 +1,6 @@
 package io.github.spring.api_parking_manager.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -9,6 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import io.github.spring.api_parking_manager.model.VehicleModel;
+import io.github.spring.api_parking_manager.model.dtos.VehicleResponseDTO;
+import io.github.spring.api_parking_manager.model.mappers.VehicleMapper;
 import io.github.spring.api_parking_manager.repository.VehicleRepository;
 import lombok.RequiredArgsConstructor;
 
@@ -17,13 +20,21 @@ import lombok.RequiredArgsConstructor;
 public class VehicleService {
   
   private final VehicleRepository vehicleRepository;
+  private final VehicleMapper vehicleMapper;
 
   public VehicleModel register(VehicleModel vehicle) {
     return vehicleRepository.save(vehicle);
   }
 
-  public List<VehicleModel> listAllVehicles() {
-    return vehicleRepository.findAll();
+  public List<VehicleResponseDTO> listAllVehicles() {
+    List<VehicleModel> vehicles = vehicleRepository.findAll();
+    List<VehicleResponseDTO> vehicleDTO = new ArrayList<>();
+
+    for (VehicleModel vehicle : vehicles) {
+      vehicleDTO.add(vehicleMapper.toResponseDTO(vehicle));
+    }
+
+    return vehicleDTO;
   }
 
   public Optional<VehicleModel> finalVehicleById(UUID id) {
