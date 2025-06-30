@@ -38,7 +38,7 @@ public class EnterpriseController {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<Optional<EnterpriseModel>> findById(@PathVariable UUID id) {
+  public ResponseEntity<Optional<EnterpriseResponseDTO>> findById(@PathVariable UUID id) {
     return ResponseEntity.ok(enterpriseService.findEntenpriseById(id));
   }
 

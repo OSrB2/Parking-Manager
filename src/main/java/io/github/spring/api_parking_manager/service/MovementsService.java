@@ -1,6 +1,7 @@
 package io.github.spring.api_parking_manager.service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -14,6 +15,8 @@ import io.github.spring.api_parking_manager.model.EnterpriseModel;
 import io.github.spring.api_parking_manager.model.MovementsModel;
 import io.github.spring.api_parking_manager.model.Status;
 import io.github.spring.api_parking_manager.model.VehicleModel;
+import io.github.spring.api_parking_manager.model.dtos.MovementsResponseDTO;
+import io.github.spring.api_parking_manager.model.mappers.MovementsMapper;
 import io.github.spring.api_parking_manager.repository.EnterpriseRepository;
 import io.github.spring.api_parking_manager.repository.MovementsRepository;
 import io.github.spring.api_parking_manager.repository.VehicleRepository;
@@ -27,6 +30,7 @@ public class MovementsService {
   private final MovementsRepository movementsRepository;
   private final EnterpriseRepository enterpriseRepository;
   private final VehicleRepository vehicleRepository;
+  private final MovementsMapper movementsMapper;
 
   public MovementsModel registerEntry(UUID vehicleId, UUID enterpriseId) {
     VehicleModel vehicle = vehicleRepository.findById(vehicleId)
@@ -65,8 +69,15 @@ public class MovementsService {
     return movementsRepository.save(movement);
   }
 
-  public List<MovementsModel> listAllMovements() {
-    return movementsRepository.findAll();
+  public List<MovementsResponseDTO> listAllMovements() {
+    List<MovementsModel> movements = movementsRepository.findAll();
+    List<MovementsResponseDTO> movementsDTO = new ArrayList<>();
+    
+    for (MovementsModel movement : movements) {
+      movementsDTO.add(movementsMapper.toResponseDTO(movement));
+    }
+
+    return movementsDTO;
   }
 
   public Optional<MovementsModel> findMovementById(UUID id) {

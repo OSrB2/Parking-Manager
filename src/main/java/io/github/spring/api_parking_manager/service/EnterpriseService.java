@@ -38,8 +38,9 @@ public class EnterpriseService {
     return enterpriseDTOs;
   }
 
-  public Optional<EnterpriseModel> findEntenpriseById(UUID id) {
-    return enterpriseRepository.findById(id);
+  public Optional<EnterpriseResponseDTO> findEntenpriseById(UUID id) {
+    return enterpriseRepository.findById(id)
+      .map(enterpriseMapper::toResponseDTO);
   }
 
   @Transactional
