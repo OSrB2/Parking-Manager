@@ -37,11 +37,12 @@ public class VehicleService {
     return vehicleDTO;
   }
 
-  public Optional<VehicleModel> finalVehicleById(UUID id) {
-    return vehicleRepository.findById(id);
+  public Optional<VehicleResponseDTO> finalVehicleById(UUID id) {
+    return vehicleRepository.findById(id)
+      .map(vehicleMapper::toResponseDTO);
   }
 
-  public VehicleModel updateVehicleById(VehicleModel vehicle) {
+  public VehicleResponseDTO updateVehicleById(VehicleModel vehicle) {
     VehicleModel vehicleToUpdate = vehicleRepository.findById(vehicle.getId())
       .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Vehicle not found!"));
 
@@ -51,7 +52,8 @@ public class VehicleService {
     Optional.ofNullable(vehicle.getPlate()).ifPresent(vehicleToUpdate::setPlate);
     Optional.ofNullable(vehicle.getType()).ifPresent(vehicleToUpdate::setType);
 
-    return vehicleRepository.save(vehicleToUpdate);
+    vehicleRepository.save(vehicleToUpdate);
+    return vehicleMapper.toResponseDTO(vehicleToUpdate);
   }
 
   public void deleteVehicleByID(UUID id) {

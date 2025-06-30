@@ -38,12 +38,12 @@ public class VehicleController {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<Optional<VehicleModel>> findById(@PathVariable UUID id) {
+  public ResponseEntity<Optional<VehicleResponseDTO>> findById(@PathVariable UUID id) {
     return ResponseEntity.ok(vehicleService.finalVehicleById(id));
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<VehicleModel> updateVehicle(@PathVariable("id") String id,
+  public ResponseEntity<VehicleResponseDTO> updateVehicle(@PathVariable("id") String id,
                                                     @RequestBody VehicleModel vehicle) {
     vehicle.setId(UUID.fromString(id));
     return ResponseEntity.ok(vehicleService.updateVehicleById(vehicle));

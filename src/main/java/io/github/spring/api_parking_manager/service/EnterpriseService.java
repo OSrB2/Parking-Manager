@@ -44,7 +44,7 @@ public class EnterpriseService {
   }
 
   @Transactional
-  public EnterpriseModel updateEnterpriseById(EnterpriseModel enterprise) {
+  public EnterpriseResponseDTO updateEnterpriseById(EnterpriseModel enterprise) {
     EnterpriseModel enterpriseToUpdate = enterpriseRepository.findById(enterprise.getId())
       .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Enterprise not found!"));
 
@@ -63,7 +63,8 @@ public class EnterpriseService {
       Optional.ofNullable(enterprise.getMotorcycleSpaces()).ifPresent(enterpriseToUpdate::setMotorcycleSpaces);
       Optional.ofNullable(enterprise.getCarSpaces()).ifPresent(enterpriseToUpdate::setCarSpaces);
       
-      return enterpriseRepository.save(enterpriseToUpdate);
+      enterpriseRepository.save(enterpriseToUpdate);
+      return enterpriseMapper.toResponseDTO(enterpriseToUpdate);
   }
 
   public void deleteEnterpriseById(UUID id) {
