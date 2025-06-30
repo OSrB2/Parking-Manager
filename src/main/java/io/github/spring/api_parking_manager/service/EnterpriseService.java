@@ -43,6 +43,10 @@ public class EnterpriseService {
       .map(enterpriseMapper::toResponseDTO);
   }
 
+  public Optional<EnterpriseResponseDTO> findEnterpriseByCnpj(String cnpj) {
+    return enterpriseRepository.findByCnpj(cnpj);
+  }
+
   @Transactional
   public EnterpriseResponseDTO updateEnterpriseById(EnterpriseModel enterprise) {
     EnterpriseModel enterpriseToUpdate = enterpriseRepository.findById(enterprise.getId())

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.github.spring.api_parking_manager.model.EnterpriseModel;
@@ -40,6 +41,11 @@ public class EnterpriseController {
   @GetMapping("/{id}")
   public ResponseEntity<Optional<EnterpriseResponseDTO>> findById(@PathVariable UUID id) {
     return ResponseEntity.ok(enterpriseService.findEntenpriseById(id));
+  }
+
+  @GetMapping("/cnpj")
+  public ResponseEntity<Optional<EnterpriseResponseDTO>> findByCnpj(@RequestParam(value = "cnpj") String cnpj) {
+    return ResponseEntity.ok(enterpriseService.findEnterpriseByCnpj(cnpj));
   }
 
   @PutMapping("/{id}")
