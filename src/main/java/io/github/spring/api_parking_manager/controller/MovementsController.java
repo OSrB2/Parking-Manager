@@ -37,6 +37,16 @@ public class MovementsController {
     return ResponseEntity.ok(movementsService.listAllMovements());
   }
 
+  @GetMapping("/active")
+  public ResponseEntity<List<MovementsResponseDTO>> listAllActive() {
+    return ResponseEntity.ok(movementsService.listAllActiveMovements());
+  }
+
+  @GetMapping("/finished")
+  public ResponseEntity<List<MovementsResponseDTO>> listAllFinished() {
+    return ResponseEntity.ok(movementsService.listAllFinishedMovements());
+  }
+
   @GetMapping("/{id}")
   public ResponseEntity<Optional<MovementsModel>> findById(@PathVariable UUID id) {
     return ResponseEntity.ok(movementsService.findMovementById(id));

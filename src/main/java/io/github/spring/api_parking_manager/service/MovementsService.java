@@ -80,6 +80,28 @@ public class MovementsService {
     return movementsDTO;
   }
 
+  public List<MovementsResponseDTO> listAllActiveMovements() {
+    List<MovementsModel> movements = movementsRepository.findAllByStatusIs(Status.ACTIVE);
+    List<MovementsResponseDTO> movementsDTO = new ArrayList<>();
+
+    for (MovementsModel movement : movements) {
+      movementsDTO.add(movementsMapper.toResponseDTO(movement));
+    }
+
+    return movementsDTO;
+  }
+
+  public List<MovementsResponseDTO> listAllFinishedMovements() {
+    List<MovementsModel> movements = movementsRepository.findAllByStatusIs(Status.FINISHED);
+    List<MovementsResponseDTO> movementsDTO = new ArrayList<>();
+
+    for (MovementsModel movement : movements) {
+      movementsDTO.add(movementsMapper.toResponseDTO(movement));
+    }
+
+    return movementsDTO;
+  }
+
   public Optional<MovementsModel> findMovementById(UUID id) {
     return movementsRepository.findById(id);
   }
