@@ -44,7 +44,7 @@ public class EnterpriseController {
   }
 
   @GetMapping("/cnpj")
-  public ResponseEntity<Optional<EnterpriseResponseDTO>> findByCnpj(@RequestParam(value = "cnpj") String cnpj) {
+  public ResponseEntity<Optional<EnterpriseResponseDTO>> findByCnpj(@RequestParam String cnpj) {
     return ResponseEntity.ok(enterpriseService.findEnterpriseByCnpj(cnpj));
   }
 
