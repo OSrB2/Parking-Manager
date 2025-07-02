@@ -44,7 +44,8 @@ public class EnterpriseService {
   }
 
   public Optional<EnterpriseResponseDTO> findEnterpriseByCnpj(String cnpj) {
-    return enterpriseRepository.findByCnpj(cnpj);
+    return enterpriseRepository.findByCnpj(cnpj)
+      .map(enterpriseMapper::toResponseDTO);
   }
 
   @Transactional

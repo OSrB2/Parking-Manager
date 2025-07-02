@@ -7,7 +7,7 @@ import io.github.spring.api_parking_manager.model.EnterpriseModel;
 import io.github.spring.api_parking_manager.model.dtos.EnterpriseResponseDTO;
 
 @Component
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {AddressMapper.class})
 public interface EnterpriseMapper {
 
   EnterpriseModel toEntity(EnterpriseResponseDTO enterpriseResponseDTO);
