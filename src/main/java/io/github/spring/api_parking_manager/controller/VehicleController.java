@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.github.spring.api_parking_manager.model.VehicleModel;
@@ -40,6 +41,11 @@ public class VehicleController {
   @GetMapping("/{id}")
   public ResponseEntity<Optional<VehicleResponseDTO>> findById(@PathVariable UUID id) {
     return ResponseEntity.ok(vehicleService.finalVehicleById(id));
+  }
+
+  @GetMapping("/plate")
+  public ResponseEntity<Optional<VehicleResponseDTO>> findByPlate(@RequestParam String plate) {
+    return ResponseEntity.ok(vehicleService.findVehicleByPlate(plate));
   }
 
   @PutMapping("/{id}")

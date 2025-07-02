@@ -42,6 +42,11 @@ public class VehicleService {
       .map(vehicleMapper::toResponseDTO);
   }
 
+  public Optional<VehicleResponseDTO> findVehicleByPlate(String plate) {
+    return vehicleRepository.findVehicleByPlate(plate)
+      .map(vehicleMapper::toResponseDTO);
+  }
+
   public VehicleResponseDTO updateVehicleById(VehicleModel vehicle) {
     VehicleModel vehicleToUpdate = vehicleRepository.findById(vehicle.getId())
       .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Vehicle not found!"));
