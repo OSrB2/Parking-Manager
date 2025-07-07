@@ -6,12 +6,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
-
 import io.github.spring.api_parking_manager.exception.EntityNotFoundException;
+import io.github.spring.api_parking_manager.exception.NoSpotsAvailableException;
+import io.github.spring.api_parking_manager.exception.UnsupportedVehicleTypeException;
 import io.github.spring.api_parking_manager.model.EnterpriseModel;
 import io.github.spring.api_parking_manager.model.MovementsModel;
 import io.github.spring.api_parking_manager.model.Status;
@@ -45,19 +44,19 @@ public class MovementsService {
     switch (vehicle.getType()) {
       case CAR -> {
         if (enterprise.getCarSpaces() <= 0) {
-        throw new RuntimeException("No spots available!");
+        throw new NoSpotsAvailableException("The car parking spaces are full!");
         } 
         enterprise.setCarSpaces(enterprise.getCarSpaces() - 1);
         break;
       }
       case MOTORCYCLE -> {
         if (enterprise.getMotorcycleSpaces() <= 0) {
-        throw new RuntimeException("No spots available!");
+        throw new NoSpotsAvailableException("The motorcycle parking spaces are full!");
         }
         enterprise.setMotorcycleSpaces(enterprise.getMotorcycleSpaces() - 1);
         break;
       }
-      default -> throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Unsupported vehicle type!");
+      default -> throw new UnsupportedVehicleTypeException("Unsupported vehicle type!");
     }      
 
     movement.setStatus(Status.ACTIVE);
