@@ -5,10 +5,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
-
+import io.github.spring.api_parking_manager.exception.EntityNotFoundException;
 import io.github.spring.api_parking_manager.model.VehicleModel;
 import io.github.spring.api_parking_manager.model.dtos.VehicleResponseDTO;
 import io.github.spring.api_parking_manager.model.mappers.VehicleMapper;
@@ -28,6 +26,11 @@ public class VehicleService {
 
   public List<VehicleResponseDTO> listAllVehicles() {
     List<VehicleModel> vehicles = vehicleRepository.findAll();
+
+    if (vehicles.isEmpty()) {
+      throw new EntityNotFoundException("Vehicles not found!");
+    }
+
     List<VehicleResponseDTO> vehicleDTO = new ArrayList<>();
 
     for (VehicleModel vehicle : vehicles) {
@@ -38,18 +41,30 @@ public class VehicleService {
   }
 
   public Optional<VehicleResponseDTO> finalVehicleById(UUID id) {
+    Optional<VehicleModel> vehicleOptional = vehicleRepository.findById(id);
+
+    if (vehicleOptional.isEmpty()) {
+      throw new EntityNotFoundException("Vehicle not found!");
+    }
+
     return vehicleRepository.findById(id)
       .map(vehicleMapper::toResponseDTO);
   }
 
   public Optional<VehicleResponseDTO> findVehicleByPlate(String plate) {
+    Optional<VehicleModel> vehicleOptional = vehicleRepository.findVehicleByPlate(plate);
+
+    if (vehicleOptional.isEmpty()) {
+      throw new EntityNotFoundException("Vehicle not found!");
+    }
+
     return vehicleRepository.findVehicleByPlate(plate)
       .map(vehicleMapper::toResponseDTO);
   }
 
   public VehicleResponseDTO updateVehicleById(VehicleModel vehicle) {
     VehicleModel vehicleToUpdate = vehicleRepository.findById(vehicle.getId())
-      .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Vehicle not found!"));
+      .orElseThrow(() -> new EntityNotFoundException("Vehicle not found!"));
 
     Optional.ofNullable(vehicle.getBrand()).ifPresent(vehicleToUpdate::setBrand);
     Optional.ofNullable(vehicle.getModel()).ifPresent(vehicleToUpdate::setModel);
@@ -63,7 +78,7 @@ public class VehicleService {
 
   public void deleteVehicleByID(UUID id) {
     VehicleModel vehicleToDelete = vehicleRepository.findById(id)
-      .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Vechicle not found!"));
+      .orElseThrow(() -> new EntityNotFoundException("Vehicle not found!"));
 
       vehicleRepository.delete(vehicleToDelete);
   }

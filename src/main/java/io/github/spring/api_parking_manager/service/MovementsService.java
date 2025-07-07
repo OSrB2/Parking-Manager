@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import io.github.spring.api_parking_manager.exception.EntityNotFoundException;
 import io.github.spring.api_parking_manager.model.EnterpriseModel;
 import io.github.spring.api_parking_manager.model.MovementsModel;
 import io.github.spring.api_parking_manager.model.Status;
@@ -34,10 +35,10 @@ public class MovementsService {
 
   public MovementsModel registerEntry(UUID vehicleId, UUID enterpriseId) {
     VehicleModel vehicle = vehicleRepository.findById(vehicleId)
-      .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Vehicle not found!"));
+      .orElseThrow(() -> new EntityNotFoundException("Vehicle not found!"));
     
     EnterpriseModel enterprise = enterpriseRepository.findById(enterpriseId)
-      .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Parking not found!"));
+      .orElseThrow(() -> new EntityNotFoundException("Parking not found!"));
 
     MovementsModel movement = new MovementsModel();
 
@@ -71,6 +72,11 @@ public class MovementsService {
 
   public List<MovementsResponseDTO> listAllMovements() {
     List<MovementsModel> movements = movementsRepository.findAll();
+
+    if (movements.isEmpty()) {
+      throw new EntityNotFoundException("No movements found!");
+    }
+
     List<MovementsResponseDTO> movementsDTO = new ArrayList<>();
     
     for (MovementsModel movement : movements) {
@@ -82,6 +88,11 @@ public class MovementsService {
 
   public List<MovementsResponseDTO> listAllActiveMovements() {
     List<MovementsModel> movements = movementsRepository.findAllByStatusIs(Status.ACTIVE);
+
+    if (movements.isEmpty()) {
+      throw new EntityNotFoundException("No active movements found!");
+    }
+
     List<MovementsResponseDTO> movementsDTO = new ArrayList<>();
 
     for (MovementsModel movement : movements) {
@@ -93,6 +104,11 @@ public class MovementsService {
 
   public List<MovementsResponseDTO> listAllFinishedMovements() {
     List<MovementsModel> movements = movementsRepository.findAllByStatusIs(Status.FINISHED);
+
+    if (movements.isEmpty()) {
+      throw new EntityNotFoundException("No finished movements found!");
+    }
+
     List<MovementsResponseDTO> movementsDTO = new ArrayList<>();
 
     for (MovementsModel movement : movements) {
@@ -103,12 +119,18 @@ public class MovementsService {
   }
 
   public Optional<MovementsModel> findMovementById(UUID id) {
+    Optional<MovementsModel> movementsOptional = movementsRepository.findById(id);
+
+    if (movementsOptional.isEmpty()) {
+      throw new EntityNotFoundException("Movement not found!");
+    }
+
     return movementsRepository.findById(id);
   }
 
   public MovementsModel registerExit(UUID id) {
     MovementsModel movement = movementsRepository.findById(id)
-      .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Movement not found!"));
+      .orElseThrow(() -> new EntityNotFoundException("Movement not found!"));
 
     switch (movement.getType()) {
       case CAR:
