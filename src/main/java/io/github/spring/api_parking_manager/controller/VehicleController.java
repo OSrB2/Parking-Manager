@@ -16,8 +16,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.github.spring.api_parking_manager.model.VehicleModel;
+import io.github.spring.api_parking_manager.model.dtos.VehicleRequestDTO;
 import io.github.spring.api_parking_manager.model.dtos.VehicleResponseDTO;
+import io.github.spring.api_parking_manager.model.mappers.VehicleMapper;
 import io.github.spring.api_parking_manager.service.VehicleService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -26,11 +29,12 @@ import lombok.RequiredArgsConstructor;
 public class VehicleController {
   
   private final VehicleService vehicleService;
+  private final VehicleMapper vehicleMapper;
 
   @PostMapping
-  public ResponseEntity<VehicleModel> registerVehicle(@RequestBody VehicleModel vehicleModel) {
-    VehicleModel vehicle = vehicleService.register(vehicleModel);
-    return ResponseEntity.ok().body(vehicle);
+  public ResponseEntity<VehicleResponseDTO> registerVehicle(@RequestBody @Valid VehicleRequestDTO vehicleRequestDTO) {
+    VehicleModel vehicle = vehicleMapper.toEntity(vehicleRequestDTO);
+    return ResponseEntity.ok(vehicleService.register(vehicle));
   }
 
   @GetMapping

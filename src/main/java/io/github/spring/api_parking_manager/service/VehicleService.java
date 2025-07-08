@@ -8,6 +8,7 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 import io.github.spring.api_parking_manager.exception.EntityNotFoundException;
 import io.github.spring.api_parking_manager.model.VehicleModel;
+import io.github.spring.api_parking_manager.model.dtos.VehicleRequestDTO;
 import io.github.spring.api_parking_manager.model.dtos.VehicleResponseDTO;
 import io.github.spring.api_parking_manager.model.mappers.VehicleMapper;
 import io.github.spring.api_parking_manager.repository.VehicleRepository;
@@ -20,8 +21,9 @@ public class VehicleService {
   private final VehicleRepository vehicleRepository;
   private final VehicleMapper vehicleMapper;
 
-  public VehicleModel register(VehicleModel vehicle) {
-    return vehicleRepository.save(vehicle);
+  public VehicleResponseDTO register(VehicleModel vehicle) {
+    VehicleModel savedVehicle = vehicleRepository.save(vehicle);
+    return vehicleMapper.toResponseDTO(savedVehicle);
   }
 
   public List<VehicleResponseDTO> listAllVehicles() {
