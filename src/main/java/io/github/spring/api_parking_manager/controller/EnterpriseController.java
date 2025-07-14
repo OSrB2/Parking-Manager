@@ -16,8 +16,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.github.spring.api_parking_manager.model.EnterpriseModel;
+import io.github.spring.api_parking_manager.model.dtos.EnterpriseRequestDTO;
 import io.github.spring.api_parking_manager.model.dtos.EnterpriseResponseDTO;
+import io.github.spring.api_parking_manager.model.mappers.EnterpriseMapper;
 import io.github.spring.api_parking_manager.service.EnterpriseService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -26,11 +29,12 @@ import lombok.RequiredArgsConstructor;
 public class EnterpriseController {
   
   private final EnterpriseService enterpriseService;
+  private final EnterpriseMapper enterpriseMapper;
 
   @PostMapping
-  public ResponseEntity<EnterpriseModel> registerEnterprise(@RequestBody EnterpriseModel enterpriseModel) {
-    EnterpriseModel enterprise = enterpriseService.register(enterpriseModel);
-    return ResponseEntity.ok().body(enterprise);
+  public ResponseEntity<EnterpriseResponseDTO> registerEnterprise(@RequestBody @Valid EnterpriseRequestDTO enterpriseRequestDTO) {
+    EnterpriseModel enterprise = enterpriseMapper.toEntity(enterpriseRequestDTO);
+    return ResponseEntity.ok(enterpriseService.register(enterprise));
   }
 
   @GetMapping

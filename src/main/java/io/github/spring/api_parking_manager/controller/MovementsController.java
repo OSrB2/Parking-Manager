@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.github.spring.api_parking_manager.model.MovementsModel;
+import io.github.spring.api_parking_manager.model.dtos.MovementsRequestDTO;
 import io.github.spring.api_parking_manager.model.dtos.MovementsResponseDTO;
 import io.github.spring.api_parking_manager.service.MovementsService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -25,12 +27,14 @@ import lombok.RequiredArgsConstructor;
 public class MovementsController {
   
   private final MovementsService movementsService;
-
   @PostMapping
-  public ResponseEntity<MovementsModel> register(@RequestBody MovementsModel movement) {
-    MovementsModel movementsModel = movementsService.registerEntry(movement.getVehicle().getId(), movement.getEnterprise().getId());
-    return ResponseEntity.status(HttpStatus.CREATED).body(movementsModel);
-  }
+  public ResponseEntity<MovementsResponseDTO> register(@RequestBody @Valid MovementsRequestDTO requestDTO) {
+    MovementsResponseDTO response = movementsService.registerEntry(
+        requestDTO.vehicleId(),
+        requestDTO.enterpriseId()
+    );
+    return ResponseEntity.status(HttpStatus.CREATED).body(response);
+}
 
   @GetMapping
   public ResponseEntity<List<MovementsResponseDTO>> listAll() {
