@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import io.github.spring.api_parking_manager.exception.EntityNotFoundException;
 import io.github.spring.api_parking_manager.exception.NoSpotsAvailableException;
+import io.github.spring.api_parking_manager.exception.OperationNotPermittedException;
 import io.github.spring.api_parking_manager.exception.UnsupportedVehicleTypeException;
 import io.github.spring.api_parking_manager.model.EnterpriseModel;
 import io.github.spring.api_parking_manager.model.MovementsModel;
@@ -32,7 +33,7 @@ public class MovementsService {
   private final VehicleRepository vehicleRepository;
   private final MovementsMapper movementsMapper;
 
-  public MovementsModel registerEntry(UUID vehicleId, UUID enterpriseId) {
+  public MovementsResponseDTO registerEntry(UUID vehicleId, UUID enterpriseId) {
     VehicleModel vehicle = vehicleRepository.findById(vehicleId)
       .orElseThrow(() -> new EntityNotFoundException("Vehicle not found!"));
     
@@ -66,7 +67,8 @@ public class MovementsService {
     movement.setType(vehicle.getType());
 
     enterpriseRepository.save(enterprise);
-    return movementsRepository.save(movement);
+    movementsRepository.save(movement);
+    return movementsMapper.toResponseDTO(movement);
   }
 
   public List<MovementsResponseDTO> listAllMovements() {
@@ -146,5 +148,15 @@ public class MovementsService {
     movement.setDepartureTime(LocalDateTime.now());
     
     return movementsRepository.save(movement);
+  }
+
+  public void deleteMovementById(UUID id) {
+    MovementsModel movementToDelete = movementsRepository.findById(id)
+      .orElseThrow(() -> new EntityNotFoundException("Movement not found!"));
+    if (movementToDelete.getStatus() == Status.ACTIVE) {
+      throw new OperationNotPermittedException("Deletion of active movements is not allowed!");
+    }
+
+    movementsRepository.delete(movementToDelete);
   }
 }
