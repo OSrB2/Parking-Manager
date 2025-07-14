@@ -1,10 +1,12 @@
 package io.github.spring.api_parking_manager.model.dtos;
 
-import jakarta.validation.constraints.NotBlank;
+import java.util.UUID;
+
+import jakarta.validation.constraints.NotNull;
 
 public record MovementsRequestDTO(
-  @NotBlank(message = "Is required!")
-  VehicleRequestDTO vehicle,
-  @NotBlank(message = "Is required!")
-  EnterpriseRequestDTO enterprise
+  @NotNull(message = "Is required!")
+  UUID vehicleId,
+  @NotNull(message = "Is required!")
+  UUID enterpriseId
 ) {}
