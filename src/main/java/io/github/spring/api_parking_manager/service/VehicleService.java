@@ -8,7 +8,6 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 import io.github.spring.api_parking_manager.exception.EntityNotFoundException;
 import io.github.spring.api_parking_manager.model.VehicleModel;
-import io.github.spring.api_parking_manager.model.dtos.VehicleRequestDTO;
 import io.github.spring.api_parking_manager.model.dtos.VehicleResponseDTO;
 import io.github.spring.api_parking_manager.model.mappers.VehicleMapper;
 import io.github.spring.api_parking_manager.repository.VehicleRepository;

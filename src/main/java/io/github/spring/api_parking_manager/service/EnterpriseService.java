@@ -22,8 +22,9 @@ public class EnterpriseService {
   private final EnterpriseRepository enterpriseRepository;
   private final EnterpriseMapper enterpriseMapper;
 
-  public EnterpriseModel register(EnterpriseModel enterprise) {
-    return enterpriseRepository.save(enterprise);
+  public EnterpriseResponseDTO register(EnterpriseModel enterprise) {
+    EnterpriseModel savedEnterprise = enterpriseRepository.save(enterprise);
+    return enterpriseMapper.toResponseDTO(savedEnterprise);
   }
 
   public List<EnterpriseResponseDTO> listAllEnterprises() {
