@@ -11,10 +11,10 @@ public record AddressResquestDTO(
   @Size(min = 3, max = 80, message = "Must have between 3 and 80 characters!")
   String city,
   @NotBlank(message = "Is required!")
-  @Size(min = 3, max = 50, message = "Must have between 3 and 50 characters!")
-  String State,
+  @Size(min = 2, max = 50, message = "Must have between 2 and 50 characters!")
+  String state,
   @NotBlank(message = "Is required!")
-  @Size(min = 8, max = 8, message = "Must have 7 numbers separated by an ifen 'xxxxx-xxx")
+  @Size(min = 9, max = 9, message = "Must have format 'xxxxx-xxx'")
   String postalCode
 ) {
 }
