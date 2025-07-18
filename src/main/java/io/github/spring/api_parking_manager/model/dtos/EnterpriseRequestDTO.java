@@ -18,11 +18,13 @@ public record EnterpriseRequestDTO(
   String cnpj,
   @NotNull(message = "Is required!")
   @Valid
-  AddressResquestDTO address,
+  AddressRequestDTO address,
   @NotNull(message = "Is required!")
   @Min(value = 1, message = "Must have at least 1 sport!")
+  @Max(value = 30, message = "Must have at most 30 spots!")
   Integer motorcycleSpaces,
   @NotNull(message = "Is required!")
+  @Min(value = 1, message = "Must have at least 1 sport!")
   @Max(value = 30, message = "Must have at most 30 spots!")
   Integer carSpaces
 ) {

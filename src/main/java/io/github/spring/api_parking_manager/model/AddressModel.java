@@ -8,8 +8,8 @@ import lombok.Data;
 @Data
 public class AddressModel {
 
-  @Column(name = "street_address", nullable = false)
-  private String streetAddress;
+  @Column(name = "street", nullable = false)
+  private String street;
 
   @Column(name = "city", nullable = false)
   private String city;

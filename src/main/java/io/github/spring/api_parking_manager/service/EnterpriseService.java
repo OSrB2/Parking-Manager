@@ -75,7 +75,7 @@ public class EnterpriseService {
       AddressModel currentAddres = enterpriseToUpdate.getAddress();
       AddressModel newAddress = enterprise.getAddress();
 
-      Optional.ofNullable(newAddress.getStreetAddress()).ifPresent(currentAddres::setStreetAddress);
+      Optional.ofNullable(newAddress.getStreet()).ifPresent(currentAddres::setStreet);
       Optional.ofNullable(newAddress.getCity()).ifPresent(currentAddres::setCity);
       Optional.ofNullable(newAddress.getState()).ifPresent(currentAddres::setState);
       Optional.ofNullable(newAddress.getPostalCode()).ifPresent(currentAddres::setPostalCode);

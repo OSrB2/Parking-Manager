@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -59,5 +60,11 @@ public class MovementsController {
   @PutMapping("/{id}")
   public ResponseEntity<MovementsModel> existRegister(@PathVariable UUID id) {
     return ResponseEntity.ok(movementsService.registerExit(id));
+  }
+
+  @DeleteMapping("/{id}")
+  public ResponseEntity<Void> deleteMovements(@PathVariable UUID id) {
+    movementsService.deleteMovementById(id);
+    return ResponseEntity.noContent().build();
   }
 }

@@ -25,7 +25,7 @@ import jakarta.validation.Valid;
 import lombok.Data;
 
 @Entity
-@Table(name = "tb_enterprise")
+@Table(name = "tb_enterprises")
 @Data
 @EntityListeners(AuditingEntityListener.class)
 public class EnterpriseModel {
@@ -46,7 +46,7 @@ public class EnterpriseModel {
   @Valid
   private AddressModel address;
 
-  @Column(name = "motorcyle_spaces", nullable = false)
+  @Column(name = "motorcycle_spaces", nullable = false)
   private Integer motorcycleSpaces;
 
   @Column(name = "car_spaces", nullable = false)

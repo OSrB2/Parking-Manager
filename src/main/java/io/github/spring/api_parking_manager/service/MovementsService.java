@@ -34,6 +34,7 @@ public class MovementsService {
   private final MovementsMapper movementsMapper;
 
   public MovementsResponseDTO registerEntry(UUID vehicleId, UUID enterpriseId) {
+    System.out.println("ID veículo -> " + vehicleId);
     VehicleModel vehicle = vehicleRepository.findById(vehicleId)
       .orElseThrow(() -> new EntityNotFoundException("Vehicle not found!"));
     

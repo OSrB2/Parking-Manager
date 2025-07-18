@@ -46,6 +46,7 @@ public class MovementsModel {
   @Column(name = "departure_time")
   private LocalDateTime departureTime;
   
+  @Enumerated(EnumType.STRING)
   @Column(name = "status", nullable = false)
   private Status status;
   
