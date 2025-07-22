@@ -13,6 +13,7 @@ import io.github.spring.api_parking_manager.model.EnterpriseModel;
 import io.github.spring.api_parking_manager.model.dtos.EnterpriseResponseDTO;
 import io.github.spring.api_parking_manager.model.mappers.EnterpriseMapper;
 import io.github.spring.api_parking_manager.repository.EnterpriseRepository;
+import io.github.spring.api_parking_manager.validator.EnterpriseValidator;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -21,8 +22,10 @@ public class EnterpriseService {
   
   private final EnterpriseRepository enterpriseRepository;
   private final EnterpriseMapper enterpriseMapper;
+  private final EnterpriseValidator validator;
 
   public EnterpriseResponseDTO register(EnterpriseModel enterprise) {
+    validator.validate(enterprise);
     EnterpriseModel savedEnterprise = enterpriseRepository.save(enterprise);
     return enterpriseMapper.toResponseDTO(savedEnterprise);
   }
