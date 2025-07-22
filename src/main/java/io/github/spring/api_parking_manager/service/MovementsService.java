@@ -37,7 +37,7 @@ public class MovementsService {
     System.out.println("ID veículo -> " + vehicleId);
     VehicleModel vehicle = vehicleRepository.findById(vehicleId)
       .orElseThrow(() -> new EntityNotFoundException("Vehicle not found!"));
-    
+    System.out.println("ID empresa ->" + enterpriseId);
     EnterpriseModel enterprise = enterpriseRepository.findById(enterpriseId)
       .orElseThrow(() -> new EntityNotFoundException("Parking not found!"));
 
@@ -120,17 +120,18 @@ public class MovementsService {
     return movementsDTO;
   }
 
-  public Optional<MovementsModel> findMovementById(UUID id) {
+  public Optional<MovementsResponseDTO> findMovementById(UUID id) {
     Optional<MovementsModel> movementsOptional = movementsRepository.findById(id);
 
     if (movementsOptional.isEmpty()) {
       throw new EntityNotFoundException("Movement not found!");
     }
 
-    return movementsRepository.findById(id);
+    return movementsRepository.findById(id)
+      .map(movementsMapper::toResponseDTO);
   }
 
-  public MovementsModel registerExit(UUID id) {
+  public MovementsResponseDTO registerExit(UUID id) {
     MovementsModel movement = movementsRepository.findById(id)
       .orElseThrow(() -> new EntityNotFoundException("Movement not found!"));
 
@@ -148,7 +149,8 @@ public class MovementsService {
     movement.setStatus(Status.FINISHED);
     movement.setDepartureTime(LocalDateTime.now());
     
-    return movementsRepository.save(movement);
+    movementsRepository.save(movement);
+    return movementsMapper.toResponseDTO(movement);
   }
 
   public void deleteMovementById(UUID id) {

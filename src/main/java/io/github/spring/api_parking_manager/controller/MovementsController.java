@@ -53,12 +53,12 @@ public class MovementsController {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<Optional<MovementsModel>> findById(@PathVariable UUID id) {
+  public ResponseEntity<Optional<MovementsResponseDTO>> findById(@PathVariable UUID id) {
     return ResponseEntity.ok(movementsService.findMovementById(id));
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<MovementsModel> existRegister(@PathVariable UUID id) {
+  public ResponseEntity<MovementsResponseDTO> existRegister(@PathVariable UUID id) {
     return ResponseEntity.ok(movementsService.registerExit(id));
   }
 
