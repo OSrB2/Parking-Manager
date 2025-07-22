@@ -1,6 +1,6 @@
 CREATE TABLE tb_movements (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    vechicle_id UUID NOT NULL,
+    vehicle_id UUID NOT NULL,
     enterprise_id UUID NOT NULL,
     entry_time TIMESTAMP NOT NULL,
     departure_time TIMESTAMP,
@@ -9,6 +9,6 @@ CREATE TABLE tb_movements (
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT fk_vehicle FOREIGN KEY (vechicle_id) REFERENCES tb_vehicles(id),
+    CONSTRAINT fk_vehicle FOREIGN KEY (vehicle_id) REFERENCES tb_vehicles(id),
     CONSTRAINT fk_enterprise FOREIGN KEY (enterprise_id) REFERENCES tb_enterprises(id)
 );
