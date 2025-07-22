@@ -11,6 +11,7 @@ import io.github.spring.api_parking_manager.model.VehicleModel;
 import io.github.spring.api_parking_manager.model.dtos.VehicleResponseDTO;
 import io.github.spring.api_parking_manager.model.mappers.VehicleMapper;
 import io.github.spring.api_parking_manager.repository.VehicleRepository;
+import io.github.spring.api_parking_manager.validator.VehicleValidator;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -19,8 +20,10 @@ public class VehicleService {
   
   private final VehicleRepository vehicleRepository;
   private final VehicleMapper vehicleMapper;
+  private final VehicleValidator validator;
 
   public VehicleResponseDTO register(VehicleModel vehicle) {
+    validator.validate(vehicle);
     VehicleModel savedVehicle = vehicleRepository.save(vehicle);
     return vehicleMapper.toResponseDTO(savedVehicle);
   }
