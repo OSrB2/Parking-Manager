@@ -54,7 +54,7 @@ public class VehicleController {
 
   @PutMapping("/{id}")
   public ResponseEntity<VehicleResponseDTO> updateVehicle(@PathVariable("id") String id,
-                                                    @RequestBody VehicleModel vehicle) {
+                                                    @RequestBody @Valid VehicleModel vehicle) {
     vehicle.setId(UUID.fromString(id));
     return ResponseEntity.ok(vehicleService.updateVehicleById(vehicle));
   }

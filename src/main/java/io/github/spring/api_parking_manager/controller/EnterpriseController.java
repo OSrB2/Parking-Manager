@@ -54,7 +54,7 @@ public class EnterpriseController {
 
   @PutMapping("/{id}")
   public ResponseEntity<EnterpriseResponseDTO> updateEnterprise(@PathVariable("id") String id, 
-                                                          @RequestBody EnterpriseModel enterprise) {
+                                                          @RequestBody @Valid EnterpriseModel enterprise) {
     enterprise.setId(UUID.fromString(id));
     return ResponseEntity.ok(enterpriseService.updateEnterpriseById(enterprise));
   }
