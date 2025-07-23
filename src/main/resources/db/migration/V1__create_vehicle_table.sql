@@ -1,0 +1,10 @@
+CREATE TABLE tb_vehicles (
+    id UUID PRIMARY KEY,
+    brand VARCHAR(100) NOT NULL,
+    model VARCHAR(100) NOT NULL,
+    color VARCHAR(50) NOT NULL,
+    plate VARCHAR(20) NOT NULL,
+    type VARCHAR(20) NOT NULL, -- Enum armazenado como texto
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);

@@ -1,0 +1,13 @@
+CREATE TABLE tb_enterprises (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    name VARCHAR(255) NOT NULL,
+    cnpj VARCHAR(18) NOT NULL UNIQUE,
+    street VARCHAR(255) NOT NULL,
+    city VARCHAR(255) NOT NULL,
+    state VARCHAR(2) NOT NULL,
+    postal_code VARCHAR(20) NOT NULL,
+    motorcycle_spaces INTEGER NOT NULL,
+    car_spaces INTEGER NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
