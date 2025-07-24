@@ -18,8 +18,11 @@ public interface MovementsRepository extends JpaRepository<MovementsModel, UUID>
   long countParkedCars(@Param("enterpriseId") UUID enterpriseId);
 
   @Query("SELECT COUNT(m) FROM MovementsModel m WHERE m.departureTime IS NULL AND m.vehicle.type = 'MOTORCYLE' AND m.enterprise.id = :enterpriseId")
-  long countParkedMotorcycles(@Param("enterpriseId") UUID enterpriseID);
+  long countParkedMotorcycles(@Param("enterpriseId") UUID enterpriseId);
 
   @Query("SELECT m FROM MovementsModel m WHERE m.enterprise.id = :enterpriseId")
   List<MovementsModel> findByEnterpriseId(@Param("enterpriseId") UUID enterpriseId);
+
+  @Query(value = "SELECT * FROM tb_movements WHERE enterprise_id = ?1 AND departure_time IS NULL", nativeQuery = true)
+  List<MovementsModel> findByIdCarsParkedOnEnterprise(UUID enterpriseId);
 }
