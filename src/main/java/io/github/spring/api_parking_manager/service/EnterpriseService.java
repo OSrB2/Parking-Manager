@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import io.github.spring.api_parking_manager.Utils.DateTimeUtils;
 import io.github.spring.api_parking_manager.exception.EntityNotFoundException;
 import io.github.spring.api_parking_manager.model.AddressModel;
 import io.github.spring.api_parking_manager.model.EnterpriseModel;
@@ -21,7 +22,6 @@ import io.github.spring.api_parking_manager.model.dtos.VehicleReportDTO;
 import io.github.spring.api_parking_manager.model.mappers.EnterpriseMapper;
 import io.github.spring.api_parking_manager.repository.EnterpriseRepository;
 import io.github.spring.api_parking_manager.repository.MovementsRepository;
-import io.github.spring.api_parking_manager.service.Utils.DateTimeUtils;
 import io.github.spring.api_parking_manager.validator.EnterpriseValidator;
 import lombok.RequiredArgsConstructor;
 
