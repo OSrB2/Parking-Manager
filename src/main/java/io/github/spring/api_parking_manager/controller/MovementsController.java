@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.github.spring.api_parking_manager.model.MovementsModel;
 import io.github.spring.api_parking_manager.model.dtos.MovementsRequestDTO;
 import io.github.spring.api_parking_manager.model.dtos.MovementsResponseDTO;
 import io.github.spring.api_parking_manager.service.MovementsService;
