@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.github.spring.api_parking_manager.model.EnterpriseModel;
+import io.github.spring.api_parking_manager.model.dtos.ActiveVehicleDTO;
 import io.github.spring.api_parking_manager.model.dtos.EnterpriseRequestDTO;
 import io.github.spring.api_parking_manager.model.dtos.EnterpriseResponseDTO;
 import io.github.spring.api_parking_manager.model.dtos.ParkingReportDTO;
@@ -75,6 +76,12 @@ public class EnterpriseController {
   @GetMapping("/{id}/movement-report")
   public ResponseEntity<List<VehicleReportDTO>> movementReport(@PathVariable UUID id) {
     List<VehicleReportDTO> report = enterpriseService.generateMovementReport(id);
+    return ResponseEntity.ok(report);
+  }
+
+  @GetMapping("/{id}/report-parked")
+  public ResponseEntity<List<ActiveVehicleDTO>> parkedReport(@PathVariable UUID id) {
+    List<ActiveVehicleDTO> report = enterpriseService.listActiveVehicles(id);
     return ResponseEntity.ok(report);
   }
 }
