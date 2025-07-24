@@ -13,6 +13,7 @@ import io.github.spring.api_parking_manager.exception.EntityNotFoundException;
 import io.github.spring.api_parking_manager.model.AddressModel;
 import io.github.spring.api_parking_manager.model.EnterpriseModel;
 import io.github.spring.api_parking_manager.model.MovementsModel;
+import io.github.spring.api_parking_manager.model.dtos.ActiveVehicleDTO;
 import io.github.spring.api_parking_manager.model.dtos.EnterpriseResponseDTO;
 import io.github.spring.api_parking_manager.model.dtos.OccupationDTO;
 import io.github.spring.api_parking_manager.model.dtos.ParkingReportDTO;
@@ -107,12 +108,12 @@ public class EnterpriseService {
     enterpriseRepository.delete(enterpriseToDelete);
   }
 
-  public ParkingReportDTO generateOccupancyReport(UUID enterpriseId) {
-    EnterpriseModel enterprise = enterpriseRepository.findById(enterpriseId)
+  public ParkingReportDTO generateOccupancyReport(UUID id) {
+    EnterpriseModel enterprise = enterpriseRepository.findById(id)
       .orElseThrow(() -> new EntityNotFoundException("Enterprise not found!"));
 
-      long parkedCars = movementsRepository.countParkedCars(enterpriseId);
-      long parkedMotorcycles = movementsRepository.countParkedMotorcycles(enterpriseId);
+      long parkedCars = movementsRepository.countParkedCars(id);
+      long parkedMotorcycles = movementsRepository.countParkedMotorcycles(id);
 
       OccupationDTO cars = new OccupationDTO(enterprise.getCarSpaces(), parkedCars);
       OccupationDTO motorcycles = new OccupationDTO(enterprise.getMotorcycleSpaces(), parkedMotorcycles);
@@ -120,8 +121,8 @@ public class EnterpriseService {
       return new ParkingReportDTO(cars, motorcycles);
   }
 
-  public List<VehicleReportDTO> generateMovementReport(UUID enterpriseId) {
-    List<MovementsModel> movement =movementsRepository.findByEnterpriseId(enterpriseId);
+  public List<VehicleReportDTO> generateMovementReport(UUID id) {
+    List<MovementsModel> movement = movementsRepository.findByEnterpriseId(id);
 
     if (movement.isEmpty()) {
       throw new EntityNotFoundException("Enterprise not found!");
@@ -138,6 +139,20 @@ public class EnterpriseService {
           time
         );
       })
+      .collect(Collectors.toList());
+  }
+
+  public List<ActiveVehicleDTO> listActiveVehicles(UUID id) {
+    List<MovementsModel> active = movementsRepository.findByIdCarsParkedOnEnterprise(id);
+
+    return active.stream()
+      .map(m -> new ActiveVehicleDTO(
+        m.getVehicle().getPlate(),
+        m.getVehicle().getBrand(),
+        m.getVehicle().getModel(),
+        m.getVehicle().getType().toString(),
+        m.getEntryTime()
+      ))
       .collect(Collectors.toList());
   }
 }
