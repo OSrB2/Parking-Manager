@@ -1,4 +1,4 @@
-package io.github.spring.api_parking_manager.service.Utils;
+package io.github.spring.api_parking_manager.Utils;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

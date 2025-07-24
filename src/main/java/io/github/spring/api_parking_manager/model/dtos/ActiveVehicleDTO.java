@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 
-import io.github.spring.api_parking_manager.service.Utils.DateFormatterUtil;
+import io.github.spring.api_parking_manager.Utils.DateFormatterUtil;
 
 public record ActiveVehicleDTO(
   String plate,
