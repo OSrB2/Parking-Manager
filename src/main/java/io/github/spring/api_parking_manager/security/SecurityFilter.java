@@ -1,0 +1,45 @@
+package io.github.spring.api_parking_manager.security;
+
+import java.io.IOException;
+
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+import io.github.spring.api_parking_manager.repository.UserRepository;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
+
+@Component
+@RequiredArgsConstructor
+public class SecurityFilter extends OncePerRequestFilter {
+
+  private final TokenService tokenService;
+  private final UserRepository userReporitory;
+
+  @Override
+  protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+      throws ServletException, IOException {
+    var token = this.recoverToken(request);
+
+    if (token != null) {
+      var login = tokenService.validateToken(token);
+      UserDetails user = userReporitory.findByLogin(login);
+      var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+      SecurityContextHolder.getContext().setAuthentication(authentication);
+    }
+    filterChain.doFilter(request, response);
+  }
+
+  private String recoverToken(HttpServletRequest request) {
+    var authHeader = request.getHeader("Authorization");
+    if (authHeader == null) return null;
+    return authHeader.replace("Bearer ", "");
+  }
+  
+}
