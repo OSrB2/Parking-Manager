@@ -8,7 +8,6 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 import io.github.spring.api_parking_manager.model.UserModel;
-import io.github.spring.api_parking_manager.model.dtos.UserRequestDTO;
 import io.github.spring.api_parking_manager.model.dtos.UserResponseDTO;
 import io.github.spring.api_parking_manager.model.mappers.UserMapper;
 import io.github.spring.api_parking_manager.repository.UserRepository;
@@ -91,6 +90,25 @@ public class UserService {
       userDTO.add(userMapper.tResponseDTO(user));
     }
     return userDTO;
+  }
+
+  public UserResponseDTO updateUserById(UserModel user) {
+    UserModel userToUpdate = userRepository.findById(user.getId())
+      .orElseThrow(() -> new EntityNotFoundException("User not found!"));
+
+    Optional.ofNullable(user.getName()).ifPresent(userToUpdate::setName);
+    Optional.ofNullable(user.getLastName()).ifPresent(userToUpdate::setLastName);
+    Optional.ofNullable(user.getRoles()).ifPresent(userToUpdate::setRoles);
+
+    userRepository.save(userToUpdate);
+    return userMapper.tResponseDTO(userToUpdate);
+  }
+
+  public void deleteUserById(UUID id) {
+    UserModel userToDelete = userRepository.findById(id)
+      .orElseThrow(() -> new EntityNotFoundException("User not found!"));
+
+    userRepository.delete(userToDelete);
   }
 
 }

@@ -11,8 +11,7 @@ import io.github.spring.api_parking_manager.model.dtos.UserResponseDTO;
 @Mapper(componentModel = "spring")
 public interface UserMapper {
 
-    
-  UserModel toEntity(UserRequestDTO UserRequesDTO);
+  UserModel toEntity(UserRequestDTO UserRequestDTO);
 
   UserResponseDTO tResponseDTO(UserModel userModel);
 }
