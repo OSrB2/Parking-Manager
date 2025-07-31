@@ -1,72 +1,59 @@
 package io.github.spring.api_parking_manager.controller;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.github.spring.api_parking_manager.model.UserModel;
-import io.github.spring.api_parking_manager.model.dtos.UserRequestDTO;
-import io.github.spring.api_parking_manager.model.dtos.UserResponseDTO;
-import io.github.spring.api_parking_manager.model.mappers.UserMapper;
-import io.github.spring.api_parking_manager.service.UserService;
+import io.github.spring.api_parking_manager.model.dtos.AuthenticationDTO;
+import io.github.spring.api_parking_manager.model.dtos.LoginResponseDTO;
+import io.github.spring.api_parking_manager.repository.UserRepository;
+import io.github.spring.api_parking_manager.security.TokenService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api/auth")
 @RequiredArgsConstructor
 public class UserController {
   
-  private final UserService userService;
-  private final UserMapper userMapper;
+  private final AuthenticationManager authenticationManager;
+  private final UserRepository userRepository;
+  private final TokenService tokenService;
 
-  @PostMapping
-  public ResponseEntity<UserResponseDTO> registerUser(@RequestBody @Valid UserRequestDTO userRequestDTO) {
-    UserModel user = userMapper.toEntity(userRequestDTO);
-    return ResponseEntity.ok(userService.register(user));
+  @PostMapping("/register")
+  public ResponseEntity register(@RequestBody @Valid AuthenticationDTO data) {
+
+    if (this.userRepository.findByLogin(data.login()) != null ) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("This user already exists!");
+    }
+    
+    String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
+    UserModel newUser = new UserModel(data.login(), encryptedPassword);
+
+    this.userRepository.save(newUser);
+
+    return ResponseEntity.ok("User registered successfully!!");
   }
 
-  @GetMapping
-  public ResponseEntity<List<UserResponseDTO>> listAll() {
-    return ResponseEntity.ok(userService.listAllUsers());
-  }
+  @PostMapping("/login")
+  public ResponseEntity login(@RequestBody @Valid AuthenticationDTO data) {
+    try {
+      var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
+      var auth = this.authenticationManager.authenticate(usernamePassword);
 
-  @GetMapping("/{id}")
-  public ResponseEntity<Optional<UserResponseDTO>> findById(@PathVariable UUID id) {
-    return ResponseEntity.ok(userService.findUserById(id));
-  }
+      var token = tokenService.generateToken((UserModel) auth.getPrincipal());
 
-  @GetMapping("/cpf")
-  public ResponseEntity<Optional<UserResponseDTO>> findByCpf(@RequestParam String cpf) {
-    return ResponseEntity.ok(userService.findUserByCpf(cpf));
-  }
-
-  @GetMapping("/email")
-  public ResponseEntity<Optional<UserResponseDTO>> findByEmail(@RequestParam String email) {
-    return ResponseEntity.ok(userService.findUserByEmail(email));
-  }
-
-  @PutMapping("/{id}")
-  public ResponseEntity<UserResponseDTO> updateUser(@PathVariable("id") String id,
-                                                          @RequestBody @Valid UserModel user ) {
-    user.setId(UUID.fromString(id));
-    return ResponseEntity.ok(userService.updateUserById(user));
-  }
-
-  @DeleteMapping("/{id}")
-  public ResponseEntity<Void> deleteUser(@PathVariable UUID id) {
-    userService.deleteUserById(id);
-    return ResponseEntity.noContent().build();
+      return ResponseEntity.ok(new LoginResponseDTO(token));
+    } catch (AuthenticationException e) {
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unregistered user");
+    }
   }
 }
