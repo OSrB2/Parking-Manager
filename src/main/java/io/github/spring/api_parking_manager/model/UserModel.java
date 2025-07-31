@@ -1,63 +1,76 @@
 package io.github.spring.api_parking_manager.model;
 
-import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
-import org.hibernate.annotations.Type;
-import org.hibernate.validator.constraints.br.CPF;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
-import io.hypersistence.utils.hibernate.type.array.ListArrayType;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.Email;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "tb_users")
 @Data
+@NoArgsConstructor
+@EqualsAndHashCode(of = "id")
 @EntityListeners(AuditingEntityListener.class)
-public class UserModel {
+public class UserModel implements UserDetails{
   
   @Id
-  @Column(name = "id")
   @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;
-
-  @Column(name = "name", nullable = false)
-  private String name;
-
-  @Column(name = "lastName", nullable = false)
-  private String lastName;
-
-  @Column(name = "cpf", nullable = false, unique = true)
-  @CPF()
-  private String cpf;
-
-  @Column(name = "email", nullable = false, unique = true)
-  @Email
-  private String email;
-
-  @Column(name = "password", nullable = false)
+  private String login;
   private String password;
 
-  @Type(ListArrayType.class)
-  @Column(name = "roles", columnDefinition = "varchar[]")
-  private List<String> roles;
+  public UserModel(String login, String password) {
+    this.login = login;
+    this.password = password;
+  }
+  
+  @Override
+  public Collection<? extends GrantedAuthority> getAuthorities() {
+    return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+  }
 
-  @CreatedDate
-  @Column(name = "created_at", nullable = false, updatable = false)
-  private LocalDateTime createdAt;
+  @Override
+  public String getPassword() {
+    return password;
+  }
 
-  @LastModifiedDate
-  @Column(name = "updated_at", nullable = false)
-  private LocalDateTime updatedAt;
+  @Override
+  public String getUsername() {
+    return login;
+  }
+
+  @Override
+  public boolean isAccountNonExpired() {
+    return 
+    true;
+  }
+
+  @Override
+  public boolean isAccountNonLocked() {
+    return true;
+  }
+
+  @Override
+  public boolean isCredentialsNonExpired() {
+    return true;
+  }
+
+  @Override
+  public boolean isEnabled() {
+    return true;
+  }
 }
