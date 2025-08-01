@@ -1,5 +1,5 @@
 CREATE TABLE tb_enterprises (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    id UUID PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     cnpj VARCHAR(18) NOT NULL UNIQUE,
     street VARCHAR(255) NOT NULL,
