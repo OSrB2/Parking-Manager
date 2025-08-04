@@ -17,7 +17,7 @@ public interface MovementsRepository extends JpaRepository<MovementsModel, UUID>
   @Query("SELECT COUNT(m) FROM MovementsModel m WHERE m.departureTime is NULL AND m.vehicle.type = 'CAR' AND m.enterprise.id = :enterpriseId")
   long countParkedCars(@Param("enterpriseId") UUID enterpriseId);
 
-  @Query("SELECT COUNT(m) FROM MovementsModel m WHERE m.departureTime IS NULL AND m.vehicle.type = 'MOTORCYLE' AND m.enterprise.id = :enterpriseId")
+  @Query("SELECT COUNT(m) FROM MovementsModel m WHERE m.departureTime IS NULL AND m.vehicle.type = 'MOTORCYCLE' AND m.enterprise.id = :enterpriseId")
   long countParkedMotorcycles(@Param("enterpriseId") UUID enterpriseId);
 
   @Query("SELECT m FROM MovementsModel m WHERE m.enterprise.id = :enterpriseId")
