@@ -41,7 +41,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @ExtendWith(MockitoExtension.class)
-public class EnterpriseServeceTest {
+public class EnterpriseServiceTest {
   @Mock
   private EnterpriseRepository enterpriseRepository;
 
