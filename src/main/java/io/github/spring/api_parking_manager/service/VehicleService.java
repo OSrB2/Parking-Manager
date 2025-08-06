@@ -44,7 +44,7 @@ public class VehicleService {
     return vehicleDTO;
   }
 
-  public Optional<VehicleResponseDTO> finalVehicleById(UUID id) {
+  public Optional<VehicleResponseDTO> findVehicleById(UUID id) {
     Optional<VehicleModel> vehicleOptional = vehicleRepository.findById(id);
 
     if (vehicleOptional.isEmpty()) {
