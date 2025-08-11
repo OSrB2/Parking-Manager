@@ -6,10 +6,12 @@ import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import io.github.spring.api_parking_manager.model.MovementsModel;
 import io.github.spring.api_parking_manager.model.Status;
 
+@Repository
 public interface MovementsRepository extends JpaRepository<MovementsModel, UUID>{
 
   List<MovementsModel> findAllByStatusIs(Status status);
