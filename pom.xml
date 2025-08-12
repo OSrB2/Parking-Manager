@@ -41,6 +41,13 @@
 			<version>4.4.0</version>
 		</dependency>
 
+        <!-- PARA TESTES-->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
         <!-- SPRING BOOT STARTERS -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
