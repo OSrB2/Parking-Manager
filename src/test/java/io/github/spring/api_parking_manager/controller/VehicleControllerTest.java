@@ -1,8 +1,6 @@
 package io.github.spring.api_parking_manager.controller;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
