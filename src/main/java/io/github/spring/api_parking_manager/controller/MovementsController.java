@@ -27,6 +27,7 @@ import lombok.RequiredArgsConstructor;
 public class MovementsController {
   
   private final MovementsService movementsService;
+
   @PostMapping
   public ResponseEntity<MovementsResponseDTO> register(@RequestBody @Valid MovementsRequestDTO requestDTO) {
     MovementsResponseDTO response = movementsService.registerEntry(
@@ -57,7 +58,7 @@ public class MovementsController {
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<MovementsResponseDTO> existRegister(@PathVariable UUID id) {
+  public ResponseEntity<MovementsResponseDTO> exitRegister(@PathVariable UUID id) {
     return ResponseEntity.ok(movementsService.registerExit(id));
   }
 
