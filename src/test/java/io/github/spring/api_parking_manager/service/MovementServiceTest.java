@@ -8,9 +8,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import javax.swing.text.html.Option;
-
-import org.checkerframework.checker.units.qual.s;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -39,7 +36,6 @@ import io.github.spring.api_parking_manager.repository.VehicleRepository;
 import static org.junit.jupiter.api.Assertions.*;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
