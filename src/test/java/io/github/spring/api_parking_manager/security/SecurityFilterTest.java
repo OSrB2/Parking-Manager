@@ -51,7 +51,7 @@ public class SecurityFilterTest {
 
     @AfterEach
     void tearDown() {
-      SecurityContextHolder.clearContext(); // limpar depois de cada teste
+      SecurityContextHolder.clearContext();
     }
 
 
