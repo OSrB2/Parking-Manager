@@ -78,8 +78,8 @@ public class VehicleValidatorTest {
     vehicle.setPlate("LMT1356");
 
     VehicleModel existingVehicle = new VehicleModel();
-    vehicle.setId(id2);
-    vehicle.setPlate("LMT1356");
+    existingVehicle.setId(id2);
+    existingVehicle.setPlate("LMT1356");
 
     when(vehicleRepository.findVehicleByPlate("LMT1356")).thenReturn(Optional.of(existingVehicle));
 
