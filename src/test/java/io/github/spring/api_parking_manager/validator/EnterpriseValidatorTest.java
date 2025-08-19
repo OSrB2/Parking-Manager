@@ -35,7 +35,7 @@ public class EnterpriseValidatorTest {
 
   @Test
   @DisplayName("Should throw exception when CNPJ already exists for a new enterprise")
-  public void shouldThrowExceptionWhenCnpjAlreadyExistisForNewEnterprise() {
+  public void testThrowExceptionWhenCnpjAlreadyExistisForNewEnterprise() {
     UUID id = UUID.fromString("7104bb59-2e2e-451e-abaa-a9c63910a1bf");
     EnterpriseModel enterprise = new EnterpriseModel();
     enterprise.setId(null);
@@ -73,6 +73,7 @@ public class EnterpriseValidatorTest {
   public void testThrowExceptionWhenCnpjBelogsToDifferentEnterprise() {
     UUID id = UUID.fromString("7104bb59-2e2e-451e-abaa-a9c63910a1bf");
     UUID id2 = UUID.fromString("601e7093-8c10-40b8-809a-1c992a234b54");
+    
     EnterpriseModel enterprise = new EnterpriseModel();
     enterprise.setId(id);
     enterprise.setCnpj("62.835.628/0001-64");
