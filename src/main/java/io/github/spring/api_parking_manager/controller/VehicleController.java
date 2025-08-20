@@ -44,7 +44,7 @@ public class VehicleController {
 
   @GetMapping("/{id}")
   public ResponseEntity<Optional<VehicleResponseDTO>> findById(@PathVariable UUID id) {
-    return ResponseEntity.ok(vehicleService.finalVehicleById(id));
+    return ResponseEntity.ok(vehicleService.findVehicleById(id));
   }
 
   @GetMapping("/plate")

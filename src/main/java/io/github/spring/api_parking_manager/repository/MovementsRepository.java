@@ -6,10 +6,12 @@ import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import io.github.spring.api_parking_manager.model.MovementsModel;
 import io.github.spring.api_parking_manager.model.Status;
 
+@Repository
 public interface MovementsRepository extends JpaRepository<MovementsModel, UUID>{
 
   List<MovementsModel> findAllByStatusIs(Status status);
@@ -17,7 +19,7 @@ public interface MovementsRepository extends JpaRepository<MovementsModel, UUID>
   @Query("SELECT COUNT(m) FROM MovementsModel m WHERE m.departureTime is NULL AND m.vehicle.type = 'CAR' AND m.enterprise.id = :enterpriseId")
   long countParkedCars(@Param("enterpriseId") UUID enterpriseId);
 
-  @Query("SELECT COUNT(m) FROM MovementsModel m WHERE m.departureTime IS NULL AND m.vehicle.type = 'MOTORCYLE' AND m.enterprise.id = :enterpriseId")
+  @Query("SELECT COUNT(m) FROM MovementsModel m WHERE m.departureTime IS NULL AND m.vehicle.type = 'MOTORCYCLE' AND m.enterprise.id = :enterpriseId")
   long countParkedMotorcycles(@Param("enterpriseId") UUID enterpriseId);
 
   @Query("SELECT m FROM MovementsModel m WHERE m.enterprise.id = :enterpriseId")
