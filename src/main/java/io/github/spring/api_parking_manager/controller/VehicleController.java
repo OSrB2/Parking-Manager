@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,7 +43,7 @@ public class VehicleController {
   @PostMapping
   @Operation(summary = "Register a new vehicle", description = "Create and register a new vehicle in the system.")
   @ApiResponses({
-    @ApiResponse(responseCode = "200", description = "Vehicle successfully registered.",
+    @ApiResponse(responseCode = "201", description = "Vehicle successfully registered.",
       content = @Content(
       mediaType = "application/json",
       schema = @Schema(implementation = VehicleResponseDTO.class)
@@ -53,7 +54,7 @@ public class VehicleController {
   })
   public ResponseEntity<VehicleResponseDTO> registerVehicle(@RequestBody @Valid VehicleRequestDTO vehicleRequestDTO) {
     VehicleModel vehicle = vehicleMapper.toEntity(vehicleRequestDTO);
-    return ResponseEntity.ok(vehicleService.register(vehicle));
+    return ResponseEntity.status(HttpStatus.CREATED).body(vehicleService.register(vehicle));
   }
 
   @GetMapping
