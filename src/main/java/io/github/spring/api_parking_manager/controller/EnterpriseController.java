@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,7 +38,7 @@ public class EnterpriseController {
   @PostMapping
   public ResponseEntity<EnterpriseResponseDTO> registerEnterprise(@RequestBody @Valid EnterpriseRequestDTO enterpriseRequestDTO) {
     EnterpriseModel enterprise = enterpriseMapper.toEntity(enterpriseRequestDTO);
-    return ResponseEntity.ok(enterpriseService.register(enterprise));
+    return ResponseEntity.status(HttpStatus.CREATED).body(enterpriseService.register(enterprise));
   }
 
   @GetMapping

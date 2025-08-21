@@ -40,7 +40,7 @@ public class UserController {
 
     this.userRepository.save(newUser);
 
-    return ResponseEntity.ok("User registered successfully!!");
+    return ResponseEntity.status(HttpStatus.CREATED).body("User registered successfully!!");
   }
 
   @PostMapping("/login")
