@@ -49,7 +49,7 @@ public class VehicleController {
       schema = @Schema(implementation = VehicleResponseDTO.class)
     )),
     @ApiResponse(responseCode = "400", description = "Bad request"),
-    @ApiResponse(responseCode = "409", description = "Conflict"),
+    @ApiResponse(responseCode = "409", description = "Conflict. Return a message if the plate is already registered"),
     @ApiResponse(responseCode = "422", description = "Validation error")
   })
   public ResponseEntity<VehicleResponseDTO> registerVehicle(@RequestBody @Valid VehicleRequestDTO vehicleRequestDTO) {
