@@ -4,6 +4,9 @@ import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
+@Schema(name = "ActiveVehicle")
 public record ActiveVehicleDTO(
   String plate,
   String model,

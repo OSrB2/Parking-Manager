@@ -16,12 +16,17 @@ import io.github.spring.api_parking_manager.model.dtos.AuthenticationDTO;
 import io.github.spring.api_parking_manager.model.dtos.LoginResponseDTO;
 import io.github.spring.api_parking_manager.repository.UserRepository;
 import io.github.spring.api_parking_manager.security.TokenService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
+@Tag(name = "User")
 public class UserController {
   
   private final AuthenticationManager authenticationManager;
@@ -29,6 +34,10 @@ public class UserController {
   private final TokenService tokenService;
 
   @PostMapping("/register")
+  @Operation(summary = "User registration", description = "Registers a new user with username and password. Return 400 if the user already exists.")
+  @ApiResponses({
+    @ApiResponse(responseCode = "201", description = "User registered successfully."),
+    @ApiResponse(responseCode = "401", description = "User already exists.")})
   public ResponseEntity register(@RequestBody @Valid AuthenticationDTO data) {
 
     if (this.userRepository.findByLogin(data.login()) != null ) {
@@ -40,10 +49,15 @@ public class UserController {
 
     this.userRepository.save(newUser);
 
-    return ResponseEntity.ok("User registered successfully!!");
+    return ResponseEntity.status(HttpStatus.CREATED).body("User registered successfully!!");
   }
 
   @PostMapping("/login")
+  @Operation(summary = "User login", description = "User login endpoint. Accepts username and password and returns an error if the user already exists.")
+  @ApiResponses({
+    @ApiResponse(responseCode = "200", description = "User authenticated successfully, JWT token returned"),
+    @ApiResponse(responseCode = "401", description = "Ivalid username or password"),
+    @ApiResponse(responseCode = "500", description = "Unexpected server error.")})
   public ResponseEntity login(@RequestBody @Valid AuthenticationDTO data) {
     try {
       var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
