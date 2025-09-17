@@ -11,7 +11,7 @@ import io.github.spring.api_parking_manager.model.dtos.VehicleResponseDTO;
 @Mapper(componentModel = "spring")
 public interface VehicleMapper {
 
-  VehicleModel toEntity(VehicleRequestDTO vehicleResquestDTO);
+  VehicleModel toEntity(VehicleRequestDTO vehicleRequestDTO);
 
   VehicleResponseDTO toResponseDTO(VehicleModel vehicleModel);
 } 
