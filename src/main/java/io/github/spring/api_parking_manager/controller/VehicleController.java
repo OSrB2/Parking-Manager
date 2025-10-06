@@ -31,11 +31,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/api/vehicles")
 @RequiredArgsConstructor
 @Tag(name = "Vehicles")
+@Slf4j
 public class VehicleController {
   
   private final VehicleService vehicleService;
@@ -60,6 +62,7 @@ public class VehicleController {
       schema = @Schema(implementation = ResponseError.class))),
   })
   public ResponseEntity<VehicleResponseDTO> registerVehicle(@RequestBody @Valid VehicleRequestDTO vehicleRequestDTO) {
+    log.info("Register new vehicle: {}", vehicleRequestDTO.brand());
     VehicleModel vehicle = vehicleMapper.toEntity(vehicleRequestDTO);
     return ResponseEntity.status(HttpStatus.CREATED).body(vehicleService.register(vehicle));
   }
@@ -160,6 +163,7 @@ public class VehicleController {
       schema = @Schema(implementation = ResponseError.class)))
   })
   public ResponseEntity<Void> deleteVehicle(@PathVariable UUID id) {
+    log.info("Delete vehicle, ID: {}", id);
     vehicleService.deleteVehicleByID(id);
     return ResponseEntity.noContent().build();
   }

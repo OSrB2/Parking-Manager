@@ -27,11 +27,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/api/movements")
 @RequiredArgsConstructor
 @Tag(name = "Movements")
+@Slf4j
 public class MovementsController {
   
   private final MovementsService movementsService;
@@ -55,6 +57,7 @@ public class MovementsController {
       schema = @Schema(implementation = ResponseError.class)))
   })
   public ResponseEntity<MovementsResponseDTO> register(@RequestBody @Valid MovementsRequestDTO requestDTO) {
+    log.info("Register new movement, {}", requestDTO.enterpriseId());
     MovementsResponseDTO response = movementsService.registerEntry(
         requestDTO.vehicleId(),
         requestDTO.enterpriseId()
@@ -173,6 +176,7 @@ public class MovementsController {
       schema = @Schema(implementation = ResponseError.class)))
   })
   public ResponseEntity<Void> deleteMovements(@PathVariable UUID id) {
+    log.info("Delete movement, ID: {}", id);
     movementsService.deleteMovementById(id);
     return ResponseEntity.noContent().build();
   }

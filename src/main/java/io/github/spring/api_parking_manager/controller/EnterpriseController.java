@@ -34,11 +34,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/api/enterprises")
 @RequiredArgsConstructor
 @Tag(name = "Enterprises")
+@Slf4j
 public class EnterpriseController {
   
   private final EnterpriseService enterpriseService;
@@ -63,6 +65,7 @@ public class EnterpriseController {
         schema = @Schema(implementation = ResponseError.class)))
   })
   public ResponseEntity<EnterpriseResponseDTO> registerEnterprise(@RequestBody @Valid EnterpriseRequestDTO enterpriseRequestDTO) {
+    log.info("Register new enterprise: {}", enterpriseRequestDTO.name());
     EnterpriseModel enterprise = enterpriseMapper.toEntity(enterpriseRequestDTO);
     return ResponseEntity.status(HttpStatus.CREATED).body(enterpriseService.register(enterprise));
   }
@@ -170,6 +173,7 @@ public class EnterpriseController {
       schema = @Schema(implementation = ResponseError.class)))
   })
   public ResponseEntity<Void> deleteEnteprise(@PathVariable UUID id) {
+    log.info("Delete enterprise, ID: {}", id);
     enterpriseService.deleteEnterpriseById(id);
     return ResponseEntity.noContent().build();
   }
